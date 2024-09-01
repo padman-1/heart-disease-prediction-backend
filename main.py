@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import pickle
 import numpy as np
+import uvicorn
+from os import environ
 
 # Load the saved model
 with open('./model/heart_disease_prediction_model.pkl', 'rb') as file:
@@ -48,3 +50,6 @@ def predict(input_data: HeartDiseaseInput):
         result = "The person has a healthy heart."
 
     return {"prediction": int(prediction), "probability": probability, "result": result}
+
+if __name__ == "__main__":
+    uvicorn.run(app, host='0.0.0.0', port=environ.get("PORT",8000))
